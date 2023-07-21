@@ -1,0 +1,47 @@
+.btn-info {
+    color: white;
+    &:hover {
+        background-color: #4ba9e7;
+        color: white;
+    }
+}
+
+.btn-success {
+    color: white;
+    &:hover {
+      background-color: #2fc561;
+      color: white;
+    }
+    &:disabled {
+      background-color: #2fc561;
+      color: white;
+    }
+}
+
+.btn-danger {
+    color: white;
+    &:hover {
+        color: white;
+    }
+}
+
+.div-buttons {
+  float: right;
+}
+
+.select.is-disabled > .select-control {
+    cursor: not-allowed;
+    color: #aaa !important;
+  }
+  
+  .select-placeholder {
+    color: black !important;
+  }
+  
+  .select.is-disabled {
+    color: #aaa !important;
+  }
+
+.form-select-lg {
+  font-size: 17px;
+}

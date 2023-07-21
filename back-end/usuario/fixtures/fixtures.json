@@ -1,0 +1,13 @@
+[
+    { 
+        "model": "usuario.Usuario",
+        "fields": {
+            "username": "ADMIN",
+            "nome": "Administrador",
+            "is_active": true,
+            "is_admin": true,
+            "altera_senha": false,
+            "password": "pbkdf2_sha256$600000$7XG3QyibtjPHpTo8rXUdIq$Ap8DH/lMlfIoVphc5adZSY3G3UmOQR5nxnLXYYgeNRA="
+        }
+    }
+]
