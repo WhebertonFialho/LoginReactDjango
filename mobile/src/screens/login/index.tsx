@@ -19,38 +19,38 @@ export function Login() {
 
     async function handleLogin() {
 
-        const formData = new FormData();
-        formData.append('username', username);
-        formData.append('password', password);
+        // const formData = new FormData();
+        // formData.append('username', username);
+        // formData.append('password', password);
 
-        await api({
-            method: "POST",
-            url: "auth/usuario/",
-            data: formData,
-            headers: { "Content-Type": "multipart/form-data" }
-        })
-        .then(response => {
-            //localStorage.setItem("token", response.data.token);
-            //localStorage.setItem("usuario", JSON.stringify(response.data.usuario[0]));
+        // await api({
+        //     method: "POST",
+        //     url: "auth/usuario/",
+        //     data: formData,
+        //     headers: { "Content-Type": "multipart/form-data" }
+        // })
+        // .then(response => {
+        //     //localStorage.setItem("token", response.data.token);
+        //     //localStorage.setItem("usuario", JSON.stringify(response.data.usuario[0]));
 
-            if( username.trim().length === 0 || password.trim().length === 0 )
-                return AppToastInformacao('Preencha os campo corretamente')
+        //     if( username.trim().length === 0 || password.trim().length === 0 )
+        //         return AppToastInformacao('Preencha os campo corretamente')
 
-            api.defaults.headers.common = { 'Authorization': `Bearer ${response.data.token}` };
+        //     api.defaults.headers.common = { 'Authorization': `Bearer ${response.data.token}` };
             
-            return AppToastSucesso('Conectado');
-        })
-        .catch(error => {
-            console.log(error)
-            if (error && error.response) {
-                if (error.response?.status === 404) 
-                    AppToastErro(error.response.data);
-                if (error.response?.status === 401) 
-                    AppToastErro('Usuário ou senha incorretas!');
-                else 
-                    AppToastErro('Sem Conexão com o Servidor');
-            }
-        })
+        //     return AppToastSucesso('Conectado');
+        // })
+        // .catch(error => {
+        //     console.log(error)
+        //     if (error && error.response) {
+        //         if (error.response?.status === 404) 
+        //             AppToastErro(error.response.data);
+        //         if (error.response?.status === 401) 
+        //             AppToastErro('Usuário ou senha incorretas!');
+        //         else 
+        //             AppToastErro('Sem Conexão com o Servidor');
+        //     }
+        // })
     }
 
     return(
