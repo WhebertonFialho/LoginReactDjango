@@ -6,6 +6,8 @@ import theme from './src/theme';
 import { Routes } from './src/routes';
 import { Loading } from '@components/Loading';
 
+import { AuthContextProvider } from '@contexts/AuthContext';
+
 import 'react-native-gesture-handler';
 
 export default function App() {
@@ -15,7 +17,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <>
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-        { fontsLoaded ? <Routes /> : <Loading /> }
+        <AuthContextProvider>
+          { fontsLoaded ? <Routes /> : <Loading /> }
+        </AuthContextProvider>
       </>
     </ThemeProvider>
   );

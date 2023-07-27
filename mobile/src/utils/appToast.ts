@@ -1,6 +1,6 @@
 import Toast from 'react-native-toast-message';
 
-export function AppToastGravar() {
+export function AppToastSucessoGravar() {
     Toast.show({
         type: 'success',
         text1: 'Gravar',

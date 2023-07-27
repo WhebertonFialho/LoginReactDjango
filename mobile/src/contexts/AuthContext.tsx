@@ -8,7 +8,7 @@ import { UsuarioDTO } from '@DTOs/UsuarioDTO'
 
 export type AuthContextDataProps = {
   user: UsuarioDTO;
-  singIn: (email: string, password: string) => Promise<void>;
+  singIn: (username: string, password: string) => Promise<void>;
   updateUserProfile: (userUpdated: UsuarioDTO) => Promise<void>;
   signOut: () => Promise<void>;
   isLoadingUserStorageData: boolean;
@@ -22,8 +22,8 @@ export const AuthContext = createContext<AuthContextDataProps>({} as AuthContext
 
 export function AuthContextProvider({ children }: AuthContextProviderProps)  {
 
-  const [user, setUser] = useState<UsuarioDTO>({} as UsuarioDTO);
-  const [isLoadingUserStorageData, setIsLoadingUserStorageData] = useState(true); 
+  const [ user, setUser ] = useState<UsuarioDTO>({} as UsuarioDTO);
+  const [ isLoadingUserStorageData, setIsLoadingUserStorageData ] = useState(true); 
 
   async function userAndTokenUpdate(userData: UsuarioDTO, token: string) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -44,10 +44,13 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
     }
   }
 
-  async function singIn(email: string, password: string) {
+  async function singIn(username: string, password: string) {
+
     try {
-      const { data } = await api.post('/sessions', { email, password });
-     
+      
+      const { data } = await api.post('/auth/login', { username: username, password: password });
+      console.log(data)
+
       if(data.user && data.token && data.refresh_token) {
         await storageUserAndTokenSave(data.user, data.token, data.refresh_token);
         userAndTokenUpdate(data.user, data.token)
@@ -111,13 +114,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
 //   },[])
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      singIn,
-      updateUserProfile,
-      signOut,
-      isLoadingUserStorageData
-    }}>
+    <AuthContext.Provider value={{ user, singIn, updateUserProfile, signOut, isLoadingUserStorageData }}>
       {children}
     </AuthContext.Provider>
   )

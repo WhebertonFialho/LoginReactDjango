@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Content-Type"] = 'application/json';
 
 const api = axios.create({
-  baseURL : "http://localhost:8000",
+  baseURL : "http://10.1.1.155:8080",
 });
 
 api.interceptors.request.use(function (config) {

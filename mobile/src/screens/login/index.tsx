@@ -1,14 +1,16 @@
 import { useState, useRef } from 'react';
 import { TextInput } from 'react-native';
-import { Container } from './styles';
+import { Container, FormConfiguracao } from './styles';
 
 import { ScreenHeader } from '@components/ScreenHeader';
 import { ScreenTitulo } from '@components/ScreenTitulo';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
+import { ButtonIcon } from '@components/ButtonIcon';
 import { AppToastErro, AppToastInformacao, AppToastSucesso } from '@utils/appToast'
 
-import { api } from '@services/api'
+import { useAuth } from '@hooks/useAuth';
+import { AppError } from '@utils/AppError';
 
 export function Login() {
     const usernameInputRef = useRef<TextInput>(null);
@@ -17,40 +19,26 @@ export function Login() {
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
 
+    const { singIn } = useAuth();
+
     async function handleLogin() {
+        if(username.trim().length === 0 || password.trim().length === 0)
+            return AppToastInformacao('Preencha os campo corretamente.');
 
-        // const formData = new FormData();
-        // formData.append('username', username);
-        // formData.append('password', password);
+        try {
+            await singIn(username, password);  
+        } catch (error) {
+            console.log('vish')
+            const isAppError = error instanceof AppError;
+            const mensagemErro =  isAppError ? error.menssagem : 'Não foi possível entrar. Tente novamente mais tarde.'
 
-        // await api({
-        //     method: "POST",
-        //     url: "auth/usuario/",
-        //     data: formData,
-        //     headers: { "Content-Type": "multipart/form-data" }
-        // })
-        // .then(response => {
-        //     //localStorage.setItem("token", response.data.token);
-        //     //localStorage.setItem("usuario", JSON.stringify(response.data.usuario[0]));
+            AppToastErro(mensagemErro)  
+        }
+        
+    }
 
-        //     if( username.trim().length === 0 || password.trim().length === 0 )
-        //         return AppToastInformacao('Preencha os campo corretamente')
-
-        //     api.defaults.headers.common = { 'Authorization': `Bearer ${response.data.token}` };
-            
-        //     return AppToastSucesso('Conectado');
-        // })
-        // .catch(error => {
-        //     console.log(error)
-        //     if (error && error.response) {
-        //         if (error.response?.status === 404) 
-        //             AppToastErro(error.response.data);
-        //         if (error.response?.status === 401) 
-        //             AppToastErro('Usuário ou senha incorretas!');
-        //         else 
-        //             AppToastErro('Sem Conexão com o Servidor');
-        //     }
-        // })
+    function handleOnPressConfiguracao(){
+        
     }
 
     return(
@@ -60,9 +48,12 @@ export function Login() {
             <Input autoCorrect={false} returnKeyType="done" inputRef={ usernameInputRef } value={ username } 
                    onChangeText={ setUsername } placeholder="Username" onSubmitEditing={ () => passwordInputRef.current?.focus }
                    style={{ marginBottom: 7 }}/>
-            <Input autoCorrect={false} returnKeyType="done" inputRef={ passwordInputRef } value={ password } 
+            <Input autoCorrect={false} secureTextEntry returnKeyType="done" inputRef={ passwordInputRef } value={ password } 
                    onChangeText={ setPassword } placeholder="Password" onSubmitEditing={ handleLogin }/>
             <Button descricao='Login' tipo='SUCCESS' onPress={ handleLogin }/>
+            <FormConfiguracao>
+                <ButtonIcon icone='settings' tipo='SUCCESS' onPress={handleOnPressConfiguracao} />
+            </FormConfiguracao>
         </Container>
     )
 }

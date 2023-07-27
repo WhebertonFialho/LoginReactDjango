@@ -5,5 +5,5 @@ def gera_token(usuario):
 
     return {
         'token': str(refresh.access_token),
-        'refresh': str(refresh)
+        'refresh_token': str(refresh)
     }
