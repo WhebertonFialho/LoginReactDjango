@@ -25,6 +25,9 @@
       "@services/*": [
         "./src/services/*"
       ],
+      "@routes/*": [
+        "./src/routes/*"
+      ],
       "@storage/*": [
         "./src/storage/*"
       ],

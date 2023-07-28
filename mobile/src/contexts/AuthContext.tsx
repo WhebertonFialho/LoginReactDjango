@@ -5,6 +5,9 @@ import { storageUsuarioBuscar, storageUsuarioRemover, storageUsuarioSalvar } fro
 
 import { api } from '@services/api';
 import { UsuarioDTO } from '@DTOs/UsuarioDTO'
+import { ConfiguracaoServidorBuscar } from "@storage/configuracaoServidor/configuracaoServidorBuscar";
+import { AppError } from "@utils/AppError";
+import { AppToastErro } from "@utils/appToast";
 
 export type AuthContextDataProps = {
   user: UsuarioDTO;
@@ -45,16 +48,33 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
   }
 
   async function singIn(username: string, password: string) {
-
     try {
-      
-      const { data } = await api.post('/auth/login', { username: username, password: password });
-      console.log(data)
 
-      if(data.user && data.token && data.refresh_token) {
-        await storageUserAndTokenSave(data.user, data.token, data.refresh_token);
-        userAndTokenUpdate(data.user, data.token)
-      }
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('password', password);
+
+      await api({
+          method: "POST",
+          url: "auth/login",
+          data: formData,
+          headers: { "Content-Type": "multipart/form-data" }
+        })
+        .then(response => {
+          
+          console.log(response)
+
+          if(response.data.usuario && response.data.token && response.data.refresh_token) {
+            storageUserAndTokenSave(response.data.usuario, response.data.token, response.data.refresh_token);
+            userAndTokenUpdate(response.data.usuario, response.data.token)
+          }
+
+          api.defaults.headers.common = { 'Authorization': `Bearer ${response.data.token}` };          
+        })
+        .catch(error => {
+          console.log(error)
+      })
+      
     } catch (error) {
       throw error
     } finally {
@@ -101,17 +121,33 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
     }
   }
 
+  async function carregarConfiguracao() {
+    try {
+      const storedConfiguracao = await ConfiguracaoServidorBuscar()
+      const urlServidor = storedConfiguracao ? storedConfiguracao : '';
+      api.defaults.baseURL = `http://${urlServidor}`;
+
+    } catch (error) {
+      if(error instanceof AppError)
+        return AppToastErro(error.menssagem)
+      
+      AppToastErro('Não foi possivel acessar as configurações');
+    }
+  }
+
   useEffect(() => {
-    loadUserData()
+    loadUserData();
+    carregarConfiguracao();
   },[])
 
-//   useEffect(() => {
-//     //const subscribe = api.registerInterceptTokenManager(signOut);
+  useEffect(() => {
+    
+    const subscribe = api.registerInterceptTokenManager(signOut);
 
-//     return () => {
-//       subscribe();
-//     }
-//   },[])
+    return () => {
+      subscribe();
+    }
+  },[])
 
   return (
     <AuthContext.Provider value={{ user, singIn, updateUserProfile, signOut, isLoadingUserStorageData }}>

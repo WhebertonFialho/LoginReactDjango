@@ -1,25 +1,29 @@
 import { useState, useRef } from 'react';
 import { TextInput } from 'react-native';
 import { Container, FormConfiguracao } from './styles';
+import { useNavigation } from '@react-navigation/native';
 
 import { ScreenHeader } from '@components/ScreenHeader';
 import { ScreenTitulo } from '@components/ScreenTitulo';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import { ButtonIcon } from '@components/ButtonIcon';
-import { AppToastErro, AppToastInformacao, AppToastSucesso } from '@utils/appToast'
+import { AppToastErro, AppToastInformacao } from '@utils/appToast'
 
 import { useAuth } from '@hooks/useAuth';
 import { AppError } from '@utils/AppError';
+
+import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
 export function Login() {
     const usernameInputRef = useRef<TextInput>(null);
     const passwordInputRef = useRef<TextInput>(null);
 
+    const navigation = useNavigation<AuthNavigatorRoutesProps>();
+    const { singIn } = useAuth();
+
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
-
-    const { singIn } = useAuth();
 
     async function handleLogin() {
         if(username.trim().length === 0 || password.trim().length === 0)
@@ -38,7 +42,7 @@ export function Login() {
     }
 
     function handleOnPressConfiguracao(){
-        
+        navigation.navigate('configuracaoServidor')
     }
 
     return(
@@ -51,8 +55,9 @@ export function Login() {
             <Input autoCorrect={false} secureTextEntry returnKeyType="done" inputRef={ passwordInputRef } value={ password } 
                    onChangeText={ setPassword } placeholder="Password" onSubmitEditing={ handleLogin }/>
             <Button descricao='Login' tipo='SUCCESS' onPress={ handleLogin }/>
-            <FormConfiguracao>
-                <ButtonIcon icone='settings' tipo='SUCCESS' onPress={handleOnPressConfiguracao} />
+            <ButtonIcon icone='settings' tipo='SUCCESS' onPress={handleOnPressConfiguracao} style={{ position:'absolute', right: 20, bottom:20}} />  
+            <FormConfiguracao  >
+                     
             </FormConfiguracao>
         </Container>
     )

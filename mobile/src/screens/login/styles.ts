@@ -7,14 +7,12 @@ export const Container = styled(SafeAreaView)`
   padding: 24px;
 `;
 
-
 export const FormConfiguracao = styled.View`
     width: 100%;
-    background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+    background-color: ${({ theme }) => theme.COLORS.GRAY_400};
 
     flex-direction: row;
     justify-content: center;
-
     border-radius: 6px;
-    margin-bottom: 10px
+    margin-bottom: 10px;
 `;
