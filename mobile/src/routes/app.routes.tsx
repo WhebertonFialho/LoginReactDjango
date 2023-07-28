@@ -1,11 +1,18 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerNavigationProp } from '@react-navigation/drawer';
 import { useTheme } from 'styled-components/native';
 import Toast from 'react-native-toast-message'
 
-import { Login } from '@screens/login';
-
-const { Navigator, Screen, Group } = createDrawerNavigator();
 import type { StackNavigationOptions } from '@react-navigation/stack';
+
+type AppRoutes = {
+  home: undefined;
+}
+
+export type AppNavigatorRoutesProps = DrawerNavigationProp<AppRoutes>;
+
+const { Navigator, Screen, Group } = createDrawerNavigator<AppRoutes>();
+
+import { Home } from '@screens/home';
 
 export function AppRoutes(){
   const { COLORS } = useTheme();
@@ -27,9 +34,7 @@ export function AppRoutes(){
   return(
     <>
       <Navigator screenOptions={ slyleMenu } >
-        <Group>
-          <Screen name="Home" component={ Login } />
-        </Group>
+        <Screen name="home" component={ Home } />
       </Navigator>
       <Toast />
     </>

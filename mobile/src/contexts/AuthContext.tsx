@@ -49,7 +49,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
 
   async function singIn(username: string, password: string) {
     try {
-
       const formData = new FormData();
       formData.append('username', username);
       formData.append('password', password);
@@ -61,9 +60,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
           headers: { "Content-Type": "multipart/form-data" }
         })
         .then(response => {
-          
-          console.log(response)
-
           if(response.data.usuario && response.data.token && response.data.refresh_token) {
             storageUserAndTokenSave(response.data.usuario, response.data.token, response.data.refresh_token);
             userAndTokenUpdate(response.data.usuario, response.data.token)
@@ -71,10 +67,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
 
           api.defaults.headers.common = { 'Authorization': `Bearer ${response.data.token}` };          
         })
-        .catch(error => {
-          console.log(error)
-      })
-      
+        .catch((error) => {
+          throw new AppError("Credenciais são Inválidas")
+          console.log(error.data)
+        })
     } catch (error) {
       throw error
     } finally {

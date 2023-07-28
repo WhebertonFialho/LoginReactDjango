@@ -26,11 +26,12 @@ export function Login() {
     const [ password, setPassword ] = useState('');
 
     async function handleLogin() {
-        if(username.trim().length === 0 || password.trim().length === 0)
-            return AppToastInformacao('Preencha os campo corretamente.');
-
         try {
+            if(username.trim().length === 0 || password.trim().length === 0)
+                return AppToastInformacao('Preencha os campo corretamente.');
+
             await singIn(username, password);  
+            AppToastInformacao('Logado.');
         } catch (error) {
             console.log('vish')
             const isAppError = error instanceof AppError;
@@ -38,7 +39,6 @@ export function Login() {
 
             AppToastErro(mensagemErro)  
         }
-        
     }
 
     function handleOnPressConfiguracao(){

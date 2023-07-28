@@ -17,10 +17,8 @@ export function AuthRoutes() {
   return (
     <>
       <Navigator screenOptions={{ headerShown: false }}>
-        <Group>
           <Screen name="login" component={Login} />
           <Screen name="configuracaoServidor" component={ ConfiguracaoServidor } />
-        </Group>
       </Navigator>
       <Toast />
     </>

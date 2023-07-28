@@ -39,7 +39,7 @@ class CadastroUsuarioViewSet(APIView):
 class LoginViewSet(APIView):
     def post(self, request):
         if 'username' not in request.data or 'password' not in request.data:
-            return Response({'mensagem': 'Credenciais são necessárias'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'menssagem': 'Credenciais são necessárias'}, status=status.HTTP_400_BAD_REQUEST)
         
         username = request.POST['username']
         password = request.POST['password']
@@ -54,7 +54,7 @@ class LoginViewSet(APIView):
             
             return Response({ 'usuario': serializer.data,  **dados_autenticacao}, status=status.HTTP_200_OK)
         
-        return Response({'mensagem': 'Credenciais são Inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"menssagem": "Credenciais são Inválidas"}, status=status.HTTP_401_UNAUTHORIZED)
     
     @classmethod
     def get_extra_actions(cls):
@@ -63,7 +63,7 @@ class LoginViewSet(APIView):
 class LogoutViewSet(APIView):
     def post(self, request):
         logout(request)
-        return Response({'mensagem': 'Logout efetuado com sucesso'}, status=status.HTTP_200_OK)
+        return Response({'menssagem': 'Logout efetuado com sucesso'}, status=status.HTTP_200_OK)
     
     @classmethod
     def get_extra_actions(cls):
