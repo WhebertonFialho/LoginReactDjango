@@ -1,10 +1,12 @@
-# Login React + Django + Django Rest Framework
+# Login React + Django + Django Rest Framework + React Native
 
 Desenvolvido usando as tecnologias:
 
 BackEnd: Python + Django + Django REST Framework;
 
 FrontEnd: ReactJS + CoreUI;
+
+Mobile: React Native
 
 ## Instalação
 
