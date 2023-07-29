@@ -33,7 +33,6 @@ export function Login() {
             await singIn(username, password);  
             AppToastInformacao('Logado.');
         } catch (error) {
-            console.log('vish')
             const isAppError = error instanceof AppError;
             const mensagemErro =  isAppError ? error.menssagem : 'Não foi possível entrar. Tente novamente mais tarde.'
 

@@ -14,6 +14,11 @@ type APIInstanceProps = AxiosInstance & {
   registerInterceptTokenManager: (signOut: SignOut) => () => void;
 }
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common["Content-Type"] = 'application/json';
+
 const api = axios.create({
   baseURL: 'http://192.168.100.95:8080',
 }) as APIInstanceProps;

@@ -53,6 +53,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
       formData.append('username', username);
       formData.append('password', password);
 
+      console.log(formData)
+
       await api({
           method: "POST",
           url: "auth/login",
@@ -62,7 +64,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
         .then(response => {
           if(response.data.usuario && response.data.token && response.data.refresh_token) {
             storageUserAndTokenSave(response.data.usuario, response.data.token, response.data.refresh_token);
-            userAndTokenUpdate(response.data.usuario, response.data.token)
+            userAndTokenUpdate(response.data.usuario[0], response.data.token)
           }
 
           api.defaults.headers.common = { 'Authorization': `Bearer ${response.data.token}` };          
