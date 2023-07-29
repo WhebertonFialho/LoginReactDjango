@@ -23,6 +23,11 @@ No diretório './front-end';
 npm install --legacy-peer-deps
 ```
 
+No diretório './mobile';
+```
+npm install --legacy-peer-deps
+```
+
 ## Execução
 
 No diretório './back-end';
@@ -31,6 +36,12 @@ python manage.py runserver
 ```
 
 No diretório './front-end';
+
+```
+npm start
+```
+
+No diretório './mobile';
 
 ```
 npm start
